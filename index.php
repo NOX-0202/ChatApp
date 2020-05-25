@@ -11,7 +11,7 @@
   $data['message'] = 'hello world';
   $pusher->trigger('my-channel', 'my-event', $data);
 
-  include __DIR__ . "/views/pusher.html";
+  include __DIR__ . "/src/examples/pusher.html";
 
 ?>
 
