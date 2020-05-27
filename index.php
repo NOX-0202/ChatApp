@@ -10,7 +10,7 @@ $router->namespace('Source\App');
 $router->group(null);
 // navegation
 $router->get('/', "Web:home", "web.home");
-$router->get('/chat', "Chat:chat", "web.chat");
+$router->get('/chat', "Chat:chat", "chat.chat");
 // validade login
 $router->post('/chat', "Chat:validade", "chat.valildade");
 // send message

@@ -15,8 +15,7 @@ $(function() {
             data,
             type: "post",
             success: res => {
-                let data = JSON.parse(res);
-                console.log(res)
+                let data = JSON.parse(res)
                 window.location.href = data.url
             }
         });

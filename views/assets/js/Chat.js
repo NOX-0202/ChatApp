@@ -9,12 +9,10 @@ $(function() {
       Pusher.logToConsole = true;
   
       var channel = pusher.subscribe('my-channel');
-  
-      channel.bind('my-event', function(data) {
-          $(' #result ').append(data[0])
-      });
-  
 
+      channel.bind('my-event', data =>  {
+        $(' #message_loader ').append(`<div><b>${data['user']}: </b>${data['message']}</div>`)
+    });
 
     $(' #form ').submit(e => {
         e.preventDefault();
@@ -22,18 +20,14 @@ $(function() {
         let action = e.target.action
 
         let data = {
-            user: $(' #send_message ').val()
+            message: $(' #send_message ').val(), 
+            user: $(' #username ')[0].innerHTML
         }
-
         
-        $.ajax({
-            url: action,
-            data,
-            type: "post",
-            success: res => {
-
-            }
+        $.post(action, data, res => {
+            data = JSON.parse(res) 
         });
 
+        $(' #send_message ').val('')
     })
 })

@@ -10,10 +10,6 @@ class Chat extends Controller {
     public function __construct($router)
     {
         parent::__construct($router);
-
-        if (empty($_SESSION["user"])) {
-            $this->router->redirect('web.home');
-        }
     }
 
     public function chat($data): void
@@ -30,19 +26,14 @@ class Chat extends Controller {
 
         $_SESSION["user"] = $user;
 
-        if (!$this->connectSocket()) {
-            return;
-        }
-
         echo json_encode([
-            "url" => $this->router->route('web.chat'),
-            "user" => $_SESSION["user"]
+            "url" => $this->router->route("chat.chat")
         ]);
 
     }
 
 
-    private function connectSocket(): Chat
+    private function connectSocket()
     {
 
         $this->socket = new Pusher(
@@ -57,12 +48,24 @@ class Chat extends Controller {
             return null;
         }
 
-        return $this;
+        return $this->socket;
     } 
     
-    public function sendMessage()
+    public function sendMessage($data)
     {
-        # code...
+        $socket = $this->connectSocket();
+
+        $message = filter_var($data["message"], FILTER_SANITIZE_STRIPPED);
+        $user = filter_var($data["user"], FILTER_SANITIZE_STRIPPED);
+
+        echo json_encode([
+            "message" => $message
+        ]);
+
+        $this->socket->trigger('my-channel', 'my-event', [
+            'message' => $message,
+            'user' => $user
+        ]);
     }
 }
 

@@ -1,7 +1,7 @@
 <?php $v->layout("_Template"); ?>
 <div class="mt-3">
     <a href="<?= site() ?>" class="logoff text-right mr-2 btn btn-danger">sair</a>
-    Olá, <?= $user ?>
+    Olá, <span id="username"><?= $user ?></span>
 </div>
 
 <div id="message_loader" class="mt-3"></div>
