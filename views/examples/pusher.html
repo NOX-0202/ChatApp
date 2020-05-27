@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head><title>Pusher Test</title>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+  <meta content="utf-8" http-equiv="encoding">
+  <script src="https://js.pusher.com/6.0/pusher.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script>
+
+    var pusher = new Pusher('7c66e54adcd6eb6bb536', {
+      cluster: 'us2'
+    });
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = false;
+
+    var channel = pusher.subscribe('my-channel');
+
+    channel.bind('my-event', function(data) {
+        $(' #result ').append(data[0])
+    });
+
+
+
+    function sendEvent() {
+
+      let data = {
+        message: $(' #message ').val()
+      }
+      
+      $.post('http://localhost/Projects-php/Pusher/src/examples/OneEvent.php', data)
+
+
+    }
+
+     
+  </script>
+</head>
+<body>
+  <h1>Pusher Test</h1>
+  <p>
+    Try publishing an event to channel <code>my-channel</code>
+    with event name <code>my-event</code>.
+  </p>
+  <div id="result"></div>
+  <input type="text"id="message">
+  <button onclick="sendEvent()"> enviar </button>
+</body>
+</html>

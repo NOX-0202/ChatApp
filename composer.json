@@ -16,7 +16,8 @@
             "Source\\": "src"
         },
         "files": [
-            "src/Config.php"
+            "src/Config.php",
+            "src/Helpers.php"
         ]
     },
     "require": {

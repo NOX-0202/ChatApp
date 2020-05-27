@@ -1,17 +1,20 @@
 <?php
-  require __DIR__ . '/vendor/autoload.php';
 
-  $pusher = new Pusher\Pusher(
-    PUSHER_API_KEYS['key'],
-    PUSHER_API_KEYS['secret'],
-    PUSHER_API_KEYS['app_id'],
-    PUSHER_API_KEYS['options']
-  );
+use CoffeeCode\Router\Router;
 
-  $data['message'] = 'hello world';
-  $pusher->trigger('my-channel', 'my-event', $data);
+require __DIR__ . '/vendor/autoload.php';
 
-  include __DIR__ . "/src/examples/pusher.html";
+$router = new Router(SITE["baseUrl"]);
 
-?>
+$router->namespace('Source\App');
+$router->group(null);
 
+// navegation
+$router->get('/', "Web:home", "web.home");
+$router->get('/chat', "Web:chat", "web.chat");
+
+
+// send message
+$router->post('/sendMessage', 'chat:sendMessage', "chat.sendMessage");
+
+$router->dispatch();
