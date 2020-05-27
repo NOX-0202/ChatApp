@@ -1,5 +1,13 @@
 <?php 
 
+    define('SITE', [
+        "title" => "ChatApp",
+        "lang" => "pt-br",
+        "baseUrl" => "http://localhost/Projects-php/Pusher"
+    ]);
+    
+
+
     define('PUSHER_API_KEYS', [
         "app_id" => "967683",
         "key" => "7c66e54adcd6eb6bb536",
