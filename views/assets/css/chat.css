@@ -1,0 +1,13 @@
+.chat_input {
+    width: 89vw;
+    margin-right: 10px;
+}
+
+.chat_btn {
+    width: 8vw;
+}
+
+#message_loader {
+    border: 1px solid #000;
+    height: 80vh;
+}

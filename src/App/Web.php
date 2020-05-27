@@ -15,6 +15,14 @@ class Web extends Controller {
         ]);
     }
 
+    public function error($data): void
+    {
+        echo $this->view->render('error', [
+            "title" => SITE['title'],
+            "error" => $data["errcode"]
+        ]);
+    }
+
 }
 
     

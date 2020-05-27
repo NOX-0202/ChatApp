@@ -6,10 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="<?= asset('css/Bootstrap/bootstrap.min.css') ?>">
     <link rel="stylesheet" href="<?= asset('css/style.css') ?>">
+    <link rel="stylesheet" href="<?= asset('css/chat.css') ?>">
     <link rel="icon" href="<?= asset('img/logo.png') ?>">
 </head>
 <body>
-    <main class="main_content">
+    <main class="main_content container-fluid">
         <?= $v->section("content"); ?>
     </main>
 </body>
