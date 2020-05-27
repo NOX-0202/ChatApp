@@ -25,7 +25,8 @@ $(function() {
         }
         
         $.post(action, data, res => {
-            data = JSON.parse(res) 
+            data = JSON.parse(res)
+            if (!data.ok) alert('Não foi possivel enviar a mensagem');
         });
 
         $(' #send_message ').val('')

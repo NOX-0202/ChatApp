@@ -29,9 +29,7 @@ class Chat extends Controller {
         echo json_encode([
             "url" => $this->router->route("chat.chat")
         ]);
-
     }
-
 
     private function connectSocket()
     {
@@ -58,14 +56,16 @@ class Chat extends Controller {
         $message = filter_var($data["message"], FILTER_SANITIZE_STRIPPED);
         $user = filter_var($data["user"], FILTER_SANITIZE_STRIPPED);
 
-        echo json_encode([
-            "message" => $message
-        ]);
-
-        $this->socket->trigger('my-channel', 'my-event', [
+        $send = $this->socket->trigger('my-channel', 'my-event', [
             'message' => $message,
             'user' => $user
         ]);
+
+        if ($send) {
+            echo json_encode([
+                "ok" => true
+            ]);
+        }
     }
 }
 
