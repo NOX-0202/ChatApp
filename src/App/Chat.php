@@ -14,6 +14,7 @@ class Chat extends Controller {
 
     public function chat($data): void
     {
+
         echo $this->view->render('chat', [
             "title" => SITE['title'],
             "user" => $_SESSION["user"]       
@@ -51,12 +52,12 @@ class Chat extends Controller {
     
     public function sendMessage($data)
     {
-        $socket = $this->connectSocket();
+        $this->connectSocket();
 
         $message = filter_var($data["message"], FILTER_SANITIZE_STRIPPED);
         $user = filter_var($data["user"], FILTER_SANITIZE_STRIPPED);
 
-        $send = $this->socket->trigger('my-channel', 'my-event', [
+        $send = $this->socket->trigger('my-channel', 'message', [
             'message' => $message,
             'user' => $user
         ]);
@@ -66,6 +67,25 @@ class Chat extends Controller {
                 "ok" => true
             ]);
         }
+    }
+
+    public function online_users ($data) {
+
+        $this->connectSocket();
+
+        $user = filter_var($data["username"], FILTER_SANITIZE_STRIPPED);
+
+        $send = $this->socket->trigger('my-channel', 'update-user', [
+            'user' => $user
+        ]);
+
+
+        if ($send) {
+            echo json_encode([
+                "ok" => true
+            ]);
+        }
+
     }
 }
 

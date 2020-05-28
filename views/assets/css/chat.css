@@ -1,5 +1,6 @@
 .chat_input {
-    width: 89vw;
+    position: relative;
+    width: 74%;
     margin-right: 10px;
 }
 
@@ -10,4 +11,8 @@
 #message_loader {
     height: 80vh;
     overflow: auto;
+}
+
+.online_users {
+    list-style: none;
 }

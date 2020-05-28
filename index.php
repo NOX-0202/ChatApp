@@ -16,6 +16,7 @@ $router->get('/chat', "Chat:chat", "chat.chat");
 $router->post('/chat', "Chat:validade", "chat.valildade");
 // send message
 $router->post('/sendMessage', 'Chat:sendMessage', "chat.sendMessage");
+$router->post('/users', 'Chat:online_users', 'chat.online_users');
 
 $router->group('error');
 $router->get('/{errcode}', "Web:error", "web.error");
