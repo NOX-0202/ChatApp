@@ -2,6 +2,7 @@
 namespace Source\App;
 
 use Pusher\Pusher;
+use Source\Models\Username;
 
 class Chat extends Controller {
 
@@ -12,12 +13,20 @@ class Chat extends Controller {
         parent::__construct($router);
     }
 
-    public function chat($data): void
+    public function chat(): void
     {
+        $users = (new Username())->find()->fetch(true);
+
+        $result = [];
+
+        foreach ($users as $user) {
+            $result[] = $user->username;
+        }
 
         echo $this->view->render('chat', [
             "title" => SITE['title'],
-            "user" => $_SESSION["user"]       
+            "user" => $_SESSION["user"],
+            "users" => $result  
         ]);
     }
     
@@ -75,17 +84,30 @@ class Chat extends Controller {
 
         $user = filter_var($data["username"], FILTER_SANITIZE_STRIPPED);
 
-        $send = $this->socket->trigger('my-channel', 'update-user', [
+        $this->socket->trigger('my-channel', 'update-user', [
             'user' => $user
         ]);
+    }
 
+    public function adduser($data)
+    {
+        $user = new Username();
 
-        if ($send) {
-            echo json_encode([
-                "ok" => true
-            ]);
-        }
+        $user->username = $_SESSION["user"];
+        $user->socket = $data["id"];
 
+        $user->save();
+
+        $_SESSION["id_user"] = $user->id;
+
+    }
+
+    public function deluser($data)
+    {
+
+        $user = (new Username())->findById($_SESSION["id_user"]);
+
+        $user->destroy();
     }
 }
 

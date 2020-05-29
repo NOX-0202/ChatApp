@@ -1,11 +1,18 @@
-$(function() {
-    var pusher = new Pusher('7c66e54adcd6eb6bb536', {
+$(async function () {
+
+    let user = $(' #username ')[0].innerHTML
+
+
+    var pusher = await new Pusher('7c66e54adcd6eb6bb536', {
         cluster: 'us2'
       });
   
       // Enable pusher logging - don't include this in production
       Pusher.logToConsole = true;
-  
+
+
+    
+    
       var channel = pusher.subscribe('my-channel');
 
       channel.bind('message', data =>  {
@@ -14,14 +21,21 @@ $(function() {
 
       channel.bind('update-user', data =>  {
         $(' #list_users ').append(`<li>${data['user']}</li>`)
-      });
+      }) ;
+      
+   
 
-    let user = $(' #username ')[0].innerHTML
+    await $.post('http://localhost/Projects-php/Pusher/users' , { username: user });
 
-    $.post('http://localhost/Projects-php/Pusher/users' , { username: user }, res => {
-       // data = JSON.parse(res)
-        console.log(res)
+    await $.post('http://localhost/Projects-php/Pusher/adduser' , { id: pusher.connection["socket_id"] }, res => {
+      console.log(res)
     });
+
+    pusher.connection.bind('disconnected', () => {
+      $.post('http://localhost/Projects-php/Pusher/deluser' , {}, res => {
+        console.log(res)
+      });
+    })
 
     $(' #form ').submit(e => {
         e.preventDefault();
@@ -40,4 +54,17 @@ $(function() {
 
         $(' #send_message ').val('')
     })
+
+
+    function windows() {
+      console.log('ok')
+      if (window.closed){
+        pusher.disconnect();
+      }
+      requestAnimationFrame(windows)
+    }
+
+    windows();
+   
+    
 })

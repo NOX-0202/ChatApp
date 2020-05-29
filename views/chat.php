@@ -2,8 +2,10 @@
 <div class="row">
   <div class="col-12 col-sm-8">
     <div class="mt-3">
-        <a href="<?= site() ?>" class="logoff text-right mr-2 btn btn-danger">sair</a>
+        <a href="<?= site() ?>" class="logoff text-right mr-2 btn btn-danger" onclick="pusher.disconnect();">sair</a>
         Olá, <span id="username"><?= $user ?></span>
+        <p>
+        </p>
     </div>
   </div>
   <!-- Force next columns to break to new line at md breakpoint and up -->
@@ -18,7 +20,11 @@
   <div class="col-2">
         <div class="online_users mt-2">
             <h3>Online users</h3>
-            <ul id="list_users"></ul>
+            <ul id="list_users">
+                <?php foreach ($users as $user): ?>
+                    <li><?= $user ?></li>
+                <?php endforeach; ?>
+            </ul>
         </div>
   </div>
 </div>
