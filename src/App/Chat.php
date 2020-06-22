@@ -15,19 +15,13 @@ class Chat extends Controller {
 
     public function chat(): void
     {
-        $users = (new Username())->find()->fetch(true);
-
-        $result = [];
-
-        foreach ($users as $user) {
-            $result[] = $user->username;
-        }
 
         echo $this->view->render('chat', [
             "title" => SITE['title'],
-            "user" => $_SESSION["user"],
-            "users" => $result  
+            "user" => $_SESSION["user"]
         ]);
+
+
     }
     
     public function validade($data)
@@ -51,6 +45,8 @@ class Chat extends Controller {
             PUSHER_API_KEYS["options"]
         );
 
+        $this->socket->get_users_info('my-channel');
+
 
         if (!$this->socket) {
             return null;
@@ -73,19 +69,26 @@ class Chat extends Controller {
 
         if ($send) {
             echo json_encode([
-                "ok" => true
+                "test" => $this->socket->get_users_info('my-channel')
             ]);
         }
     }
 
-    public function online_users ($data) {
+    public function online_users () {
 
         $this->connectSocket();
 
-        $user = filter_var($data["username"], FILTER_SANITIZE_STRIPPED);
+        $users = (new Username())->find()->fetch(true);
+
+        $result = [];
+
+        foreach ($users as $user) {
+            $result[] = "<li>" .$user->username. "</li>";
+        }
+
 
         $this->socket->trigger('my-channel', 'update-user', [
-            'user' => $user
+            'users' => $result
         ]);
     }
 
@@ -100,15 +103,13 @@ class Chat extends Controller {
 
         $_SESSION["id_user"] = $user->id;
 
+        $this->online_users();
+
     }
 
-    public function deluser($data)
+    public function deluser()
     {
-
         $user = (new Username())->findById($_SESSION["id_user"]);
-
         $user->destroy();
     }
 }
-
-    

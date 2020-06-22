@@ -10,20 +10,15 @@ $(async function () {
       // Enable pusher logging - don't include this in production
       Pusher.logToConsole = true;
 
-
-    
-    
       var channel = pusher.subscribe('my-channel');
 
       channel.bind('message', data =>  {
-        $(' #message_loader ').append(`<div><b>${data['user']}: </b>${data['message']}</div>`)
+        $(' #message_loader ').append(`<div><span class="font-weight-bold">${data['user']}: </span>${data['message']}</div>`)
       });
 
       channel.bind('update-user', data =>  {
-        $(' #list_users ').append(`<li>${data['user']}</li>`)
+        $(' #list_users ').append(data['users'])
       }) ;
-      
-   
 
     await $.post('http://localhost/Projects-php/Pusher/users' , { username: user });
 
@@ -54,17 +49,4 @@ $(async function () {
 
         $(' #send_message ').val('')
     })
-
-
-    function windows() {
-      console.log('ok')
-      if (window.closed){
-        pusher.disconnect();
-      }
-      requestAnimationFrame(windows)
-    }
-
-    windows();
-   
-    
 })

@@ -8,9 +8,12 @@
     PUSHER_API_KEYS['options']
   );
 
+ // var_dump($pusher); 
+
   $data = [isset($_POST["message"])? $_POST["message"]: 'digite uma mensagem', date('Y-m-d H:')];
 
   $pusher->trigger('my-channel', 'my-event', $data);
 
+  var_dump($pusher->get_channel_info('my-channel'));
 ?>
 
